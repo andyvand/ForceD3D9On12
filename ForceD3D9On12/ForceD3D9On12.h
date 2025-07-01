@@ -42,7 +42,14 @@ FARPROC getOrigFunc(const char* name);
         char d3d12lib[MAX_PATH]; \
         char dxgilib[MAX_PATH]; \
         path[0] = 0; \
-        GetSystemDirectory(path, sizeof(path)); \
+        BOOL IsWow64 = FALSE; \
+        HANDLE CurrentProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, GetCurrentProcessId()); \
+        IsWow64Process(CurrentProcess, &IsWow64); \
+        if (IsWow64 == TRUE) \
+            GetSystemWow64Directory(path, sizeof(path)); \
+        else \
+            GetSystemDirectory(path, sizeof(path)); \
+        printf("DLL Path: %s\n", path); \
         StringCbCat(path, sizeof(path), "\\"); \
         StringCbCopy(d3d9lib, sizeof(d3d9lib), path); \
         StringCbCopy(d3d12lib, sizeof(d3d12lib), path); \
@@ -90,7 +97,14 @@ FARPROC getOrigFunc(const char* name);
         char d3d12lib[MAX_PATH]; \
         char dxgilib[MAX_PATH]; \
         path[0] = 0; \
-        GetSystemDirectory(path, sizeof(path)); \
+        BOOL IsWow64 = FALSE; \
+        HANDLE CurrentProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, GetCurrentProcessId()); \
+        IsWow64Process(CurrentProcess, &IsWow64); \
+        if (IsWow64 == TRUE) \
+            GetSystemWow64Directory(path, sizeof(path)); \
+        else \
+            GetSystemDirectory(path, sizeof(path)); \
+        printf("DLL Path: %s\n", path); \
         StringCbCat(path, sizeof(path), "\\"); \
         StringCbCopy(d3d9lib, sizeof(d3d9lib), path); \
         StringCbCopy(d3d12lib, sizeof(d3d12lib), path); \
